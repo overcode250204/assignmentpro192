@@ -130,7 +130,7 @@ public class Vehicle_List extends ArrayList<Vehicle> implements I_Vehicle_List {
             Utils.display("Information of updated vehicle");
             Utils.display(newVehicle.toString());
         } else {
-            Utils.display("Vehicle does not exist");           
+            Utils.display("Vehicle does not exist");
         }
         if (result) {
             Utils.display("Succes");
@@ -160,7 +160,7 @@ public class Vehicle_List extends ArrayList<Vehicle> implements I_Vehicle_List {
         } else {
             Utils.display("Fail");
         }
-        
+
         return result;
     }
 
@@ -172,7 +172,7 @@ public class Vehicle_List extends ArrayList<Vehicle> implements I_Vehicle_List {
             Utils.display(vehicle.toString());
         }
     }
-    
+
     @Override
     public void searchVehicleByName(String name) {
         boolean check = false;
@@ -195,19 +195,13 @@ public class Vehicle_List extends ArrayList<Vehicle> implements I_Vehicle_List {
         ObjectOutputStream objectOutputStream = null;
 
         try {
-            if (!file.exists()) {
-                file.createNewFile();
-            } else {
-                file.delete();
-                file.createNewFile();
                 fileOutputStream = new FileOutputStream(file);
                 objectOutputStream = new ObjectOutputStream(fileOutputStream);
                 for (Vehicle vehicle : this) {
                     objectOutputStream.writeObject(vehicle);
                 }
                 result = true;
-            }
-
+            
         } catch (IOException e) {
             Utils.display("Error!!!" + e.getMessage());
         } finally {
@@ -247,7 +241,16 @@ public class Vehicle_List extends ArrayList<Vehicle> implements I_Vehicle_List {
                 objectInputStream = new ObjectInputStream(fileInputStream);
                 while (fileInputStream.available() > 0) {
                     Vehicle vehicle = (Vehicle) objectInputStream.readObject();
-                    this.add(vehicle);
+                    if (this.isEmpty()) {
+                        this.add(vehicle);
+                    } else {
+                        for (Vehicle v : this) {
+                            if (!vehicle.getId().equals(v.getId())) {
+                                this.add(vehicle);
+                            }
+                        }
+                    }
+
                 }
                 result = true;
             }
@@ -275,7 +278,5 @@ public class Vehicle_List extends ArrayList<Vehicle> implements I_Vehicle_List {
         }
         return result;
     }
-
-    
 
 }

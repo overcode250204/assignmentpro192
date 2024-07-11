@@ -9,6 +9,7 @@ import controller.Menu;
 import controller.Vehicle_List;
 import dto.I_Menu;
 import dto.I_Vehicle_List;
+import utils.Utils;
 
 /**
  *
@@ -31,7 +32,7 @@ public class VehicleManagementSystem {
         menu.addItem("6. Display vehicle list desecending by price");
         menu.addItem("7. Save vehicle to file");
         menu.addItem("8. Load data to list vehicle");
-
+        menu.addItem("9. Exit");
         do {
             menu.showMenu();
             choice = menu.getChoice();
@@ -60,7 +61,12 @@ public class VehicleManagementSystem {
                 case 8:
                     vehicle_List.loadDataFromFile("vehicle.dat");
                     break;
-
+                case 9:
+                    String quit = Utils.getString("Do you want to exit? (Y/N)");
+                    if ("Y".equalsIgnoreCase(quit)) {
+                        checkLoop = false;
+                    }
+                    break;
             }
         } while (checkLoop);
     }
